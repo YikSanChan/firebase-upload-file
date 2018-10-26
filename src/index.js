@@ -7,10 +7,11 @@ class App extends React.Component {
     event.persist();
     const file = event.target.files[0];
     const storageRef = firebase.storage().ref();
-    const birdRef = storageRef.child("birds/" + file.name);
-    birdRef
-      .put(file)
-      .then(() => console.log("File uploaded"))
+    const birdsRef = storageRef.child("birds/" + file.name);
+    const uploadTask = birdsRef.put(file);
+    uploadTask
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(downloadURL => console.log("File available at:", downloadURL))
       .catch(error => console.log("error:", error));
   };
   render() {
